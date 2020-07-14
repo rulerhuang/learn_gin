@@ -19,8 +19,9 @@ func InitRouter() *gin.Engine {
 	r.GET("/", helloHandler)
 	// 路由组
 	apis := r.Group("/api/v1")
-	// /tags?name=xx&page=xx&state=xx
+	// tags?name=xx&page=xx&state=xx
 	apis.GET("/tags", tag.GetTags)
+	// tags?name=xx&state=xx&created_by=xx
 	apis.POST("/tags", tag.AddTag)
 	apis.PUT("/tags/:id", tag.EditTag)
 	apis.DELETE("/tags/:id", tag.DeleteTag)
