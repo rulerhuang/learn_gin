@@ -68,14 +68,14 @@ func AddTag(c *gin.Context) {
 		exist, err := models.ExistTagByName(name)
 		if err != nil {
 			code = e.ERROR
-			log.Printf("ExistTagByName faild:err=%s\n", err)
+			log.Printf("ExistTagByName faild, err=%s\n", err)
 		} else if exist {
 			code = e.ERROR_EXIST_TAG
 		} else {
 			err = models.AddTag(name, state, createdBy)
 			if err != nil {
 				code = e.ERROR
-				log.Printf("AddTag faild:err=%s\n", err)
+				log.Printf("AddTag faild, err=%s\n", err)
 			}
 		}
 	}
@@ -103,6 +103,33 @@ func EditTag(c *gin.Context) {
 	valid.MaxSize(modifiedBy, 100, "modified_by").Message("修改人不能超过100字符")
 	valid.Range(state, 0, 1, "state").Message("状态只允许为0或1")
 
+	if valid.HasErrors() {
+		code = e.INVALID_PARAMS
+		for _, item := range valid.Errors {
+			log.Printf("tag=%s|err=%s\n", item.Key, item.Message)
+		}
+	}
+
+	if code == e.SUCCESS {
+		exist, err := models.ExistTagById(id)
+		if err != nil {
+			code = e.ERROR
+			log.Printf("ExistTagById faild, err=%s\n", err)
+		} else if !exist {
+			code = e.ERROR_NOT_EXIST_TAG
+		} else {
+			data := make(map[string]interface{})
+			data["name"] = name
+			data["modified_by"] = modifiedBy
+			data["state"] = state
+			err = models.EditTag(id, data)
+			if err != nil {
+				code = e.ERROR
+				log.Printf("EditTag faild, err=%s\n", err)
+			}
+		}
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg":  e.GetMsg(code),
@@ -112,4 +139,31 @@ func EditTag(c *gin.Context) {
 
 // 删除文章的标签
 func DeleteTag(c *gin.Context) {
+	id := com.StrTo(c.Param("id")).MustInt()
+	code := e.SUCCESS
+
+	if id < 0 {
+		code = e.ERROR
+		log.Printf("id = %v\n", c.Param("id"))
+	}
+
+	exist, err := models.ExistTagById(id)
+	if err != nil {
+		code = e.ERROR
+		log.Printf("ExistTagById faild, err=%s\n", err)
+	} else if !exist {
+		code = e.ERROR_NOT_EXIST_TAG
+	} else {
+		err = models.DeleteTag(id)
+		if err != nil {
+			code = e.ERROR
+			log.Printf("DeleteTag faild, err=%s\n", err)
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code": code,
+		"msg":  e.GetMsg(code),
+		"data": make(map[string]string),
+	})
 }
