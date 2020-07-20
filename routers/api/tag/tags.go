@@ -142,8 +142,8 @@ func DeleteTag(c *gin.Context) {
 	id := com.StrTo(c.Param("id")).MustInt()
 	code := e.SUCCESS
 
-	if id < 0 {
-		code = e.ERROR
+	if id <= 0 {
+		code = e.INVALID_PARAMS
 		log.Printf("id = %v\n", c.Param("id"))
 	}
 
