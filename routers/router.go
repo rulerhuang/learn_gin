@@ -3,6 +3,7 @@ package routers
 import (
 	"github.com/gin-gonic/gin"
 	"learn.gin/pkg/setting"
+	"learn.gin/routers/api/article"
 	"learn.gin/routers/api/tag"
 )
 
@@ -19,11 +20,18 @@ func InitRouter() *gin.Engine {
 	r.GET("/", helloHandler)
 	// 路由组
 	apis := r.Group("/api/v1")
-	// tags?name=xx&page=xx&state=xx
+
+	// 文章标签
 	apis.GET("/tags", tag.GetTags)
-	// tags?name=xx&state=xx&created_by=xx
 	apis.POST("/tags", tag.AddTag)
 	apis.PUT("/tags/:id", tag.EditTag)
 	apis.DELETE("/tags/:id", tag.DeleteTag)
+
+	// 文章
+	apis.GET("/article", article.GetArticle)
+	apis.GET("/articles", article.GetArticles)
+	apis.POST("/article", article.AddArticle)
+	apis.PUT("/article/:id", article.EditArticle)
+	apis.DELETE("/article/:id", article.DeleteArticle)
 	return r
 }
