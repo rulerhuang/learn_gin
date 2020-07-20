@@ -39,9 +39,28 @@ func ExistTagByName(name string) (bool, error) {
 	return false, err
 }
 
+func ExistTagById(id int) (bool, error) {
+	var (
+		count int
+		err   error
+	)
+	err = db.Model(&Tag{}).Select("count(*)").Where("id = ?", id).Count(&count).Error
+	if err == nil {
+		if count > 0 {
+			return true, err
+		}
+	}
+	return false, err
+}
+
 func (tag *Tag) BeforeCreate(scope *gorm.Scope) error {
-	scope.SetColumn("CreatedOn", time.Now().Unix())
-	scope.SetColumn("ModifiedOn", time.Now().Unix())
+	scope.SetColumn("created_on", time.Now().Unix())
+	scope.SetColumn("modified_on", time.Now().Unix())
+	return nil
+}
+
+func (tag *Tag) BeforeUpdate(scope *gorm.Scope) error {
+	scope.SetColumn("modified_on", time.Now().Unix())
 	return nil
 }
 
