@@ -200,9 +200,38 @@ func EditArticle(c *gin.Context) {
 		"msg":  msg,
 		"data": make(map[string]interface{}),
 	})
-
 }
 
 // 删除文章
 func DeleteArticle(c *gin.Context) {
+	var (
+		code = e.SUCCESS
+		msg  string
+	)
+	id := com.StrTo(c.Param("id")).MustInt()
+	if id < 1 {
+		code = e.INVALID_PARAMS
+		msg = "文章ID必须大于0"
+		log.Printf("id=%d\n", id)
+
+	}
+
+	exists, err := models.ExistArticleById(id)
+	if err != nil {
+		code = e.ERROR
+	} else if !exists {
+		code = e.ERROR_NOT_EXIST_ARTICLE
+	} else {
+		models.DeleteArticle(id)
+	}
+
+	if msg == "" {
+		msg = e.GetMsg(code)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code": code,
+		"msg":  msg,
+		"data": make(map[string]interface{}),
+	})
 }
