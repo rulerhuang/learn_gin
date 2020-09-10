@@ -9,7 +9,7 @@ import (
 type Article struct {
 	Model
 
-	TagID int `json:"tag_id" gorm:"index"`
+	TagID int `json:"tag_id" gorm:"index:idx_article_tag_id"`
 	Tag   Tag `json:"tag"`
 
 	Title      string `json:"title"`
