@@ -55,6 +55,10 @@ func init() {
 	db.LogMode(true)
 	db.DB().SetMaxIdleConns(sec.Key("MAX_IDLE_CONNECTIONS").MustInt(10))
 	db.DB().SetMaxOpenConns(sec.Key("MAX_OPEN_CONNECTIONS").MustInt(100))
+
+	// init table
+	db.AutoMigrate(&Article{})
+	db.AutoMigrate(&Tag{})
 }
 
 func CloseDB() {
