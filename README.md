@@ -7,3 +7,6 @@ fork from https://github.com/EDDYCJY/go-gin-example
 
 # tag说明
 + tag v1.0：初始化项目，搭建gin框架运行环境
+
+# 亮点
++ 隐藏数据库连接：models/models.go中将数据库连接设为private，隐藏数据库连接，对外统一暴露的是models.XX方法而不是原始的数据库连接
