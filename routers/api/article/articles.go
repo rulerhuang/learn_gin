@@ -21,7 +21,7 @@ func GetArticle(c *gin.Context) {
 		code = e.SUCCESS
 	)
 
-	id := com.StrTo(c.Param("id")).MustInt()
+	id := com.StrTo(c.Query("id")).MustInt()
 	if id <= 0 {
 		code = e.INVALID_PARAMS
 		log.Printf("id = %v\n", c.Param("id"))
@@ -213,7 +213,6 @@ func DeleteArticle(c *gin.Context) {
 		code = e.INVALID_PARAMS
 		msg = "文章ID必须大于0"
 		log.Printf("id=%d\n", id)
-
 	}
 
 	exists, err := models.ExistArticleById(id)
