@@ -63,7 +63,6 @@ func GetArticles(pageNum int, pageSize int, maps interface{}) (articles []Articl
 
 func EditArticle(id int, data interface{}) bool {
 	db.Model(&Article{}).Where("id = ?", id).Updates(data)
-
 	return true
 }
 
@@ -76,12 +75,10 @@ func AddArticle(data map[string]interface{}) bool {
 		CreatedBy: data["created_by"].(string),
 		State:     data["state"].(int),
 	})
-
 	return true
 }
 
 func DeleteArticle(id int) bool {
 	db.Where("id = ?", id).Delete(Article{})
-
 	return true
 }
