@@ -59,6 +59,7 @@ func init() {
 	// init table
 	db.AutoMigrate(&Article{})
 	db.AutoMigrate(&Tag{})
+	db.AutoMigrate(&Auth{})
 }
 
 func CloseDB() {
