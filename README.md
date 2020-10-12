@@ -1,5 +1,6 @@
 # learn_gin
-fork from https://github.com/EDDYCJY/go-gin-example
++ 项目地址 https://github.com/EDDYCJY/go-gin-example
++ 文档地址 https://eddycjy.com/tags/gin/
 
 # 依赖库
 + com库：https://github.com/unknwon/com
