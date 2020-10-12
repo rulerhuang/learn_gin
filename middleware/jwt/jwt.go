@@ -35,6 +35,7 @@ func JwtMiddle() gin.HandlerFunc {
 				"msg":  e.GetMsg(code),
 				"data": data,
 			})
+			ctx.Abort() // 及时终止handler
 		}
 	}
 }
