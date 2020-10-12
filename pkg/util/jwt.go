@@ -15,7 +15,7 @@ type Claims struct {
 }
 
 func GenerateToken(username string, password string) (string, error) {
-	expireTime := time.Now().Add(3 * time.Hour)
+	expireTime := time.Now().Add(setting.JwtTimeout)
 
 	claims := Claims{
 		username,
@@ -27,7 +27,8 @@ func GenerateToken(username string, password string) (string, error) {
 	}
 
 	newClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token, err := newClaims.SignedString(setting.JwtSecret)
+	// JwtSecret 必须为 []byte, 否则引发 key is of invalid type 异常
+	token, err := newClaims.SignedString([]byte(setting.JwtSecret))
 	return token, err
 }
 
