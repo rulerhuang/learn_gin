@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"learn.gin/pkg/setting"
@@ -21,5 +22,8 @@ func main() {
 		WriteTimeout:   setting.WriteTimeout,
 		MaxHeaderBytes: 1 << 20,
 	}
-	s.ListenAndServe()
+	err := s.ListenAndServe()
+	if err != nil {
+		log.Fatalf("call ListenAndServe() faild, err=%v\n", err)
+	}
 }
