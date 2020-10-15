@@ -6,6 +6,8 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+
+	"learn.gin/pkg/setting"
 )
 
 type Level int
@@ -36,7 +38,11 @@ const (
 func init() {
 	filePath := getLogFileFullPath()
 	F = openLogFile(filePath)
-	logger = log.New(F, DefaultPrefix, log.LstdFlags)
+	if setting.LogType == "stderr" {
+		logger = log.New(os.Stderr, "", log.LstdFlags)
+	} else {
+		logger = log.New(F, DefaultPrefix, log.LstdFlags)
+	}
 }
 
 func setPrefix(level Level) {
@@ -51,25 +57,30 @@ func setPrefix(level Level) {
 
 func Debug(v ...interface{}) {
 	setPrefix(DEBUG)
-	logger.Println(v)
+	logger.Println(v...)
 }
 
 func Info(v ...interface{}) {
 	setPrefix(INFO)
-	logger.Println(v)
+	logger.Println(v...)
 }
 
 func Warn(v ...interface{}) {
 	setPrefix(WARN)
-	logger.Println(v)
+	logger.Println(v...)
 }
 
 func Error(v ...interface{}) {
 	setPrefix(ERROR)
-	logger.Println(v)
+	logger.Println(v...)
 }
 
 func Fatal(v ...interface{}) {
 	setPrefix(FATAL)
-	logger.Fatalln(v)
+	logger.Fatalln(v...)
+}
+
+func Fatalf(format string, v ...interface{}) {
+	setPrefix(FATAL)
+	logger.Fatalf(format, v...)
 }
