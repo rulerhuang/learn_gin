@@ -11,6 +11,7 @@ var (
 	Cfg *ini.File
 
 	RunMode string
+	LogType string
 
 	HTTPPort     int
 	ReadTimeout  time.Duration
@@ -35,6 +36,7 @@ func init() {
 
 func LoadBase() {
 	RunMode = Cfg.Section("").Key("RUN_MODE").MustString("debug")
+	LogType = Cfg.Section("log").Key("TYPE").MustString("stderr")
 }
 
 func LoadServer() {
