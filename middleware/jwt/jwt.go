@@ -19,7 +19,7 @@ func JwtMiddle() gin.HandlerFunc {
 
 		token := ctx.Query("token")
 		if token == "" {
-			code = e.INVALID_PARAMS
+			code = e.ERROR_AUTH_CHECK_TOKEN_FAIL
 		} else {
 			claims, err := util.ParseToken(token)
 			if err != nil {
