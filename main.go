@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"learn.gin/pkg/logging"
 	"learn.gin/pkg/setting"
 	"learn.gin/routers"
 )
@@ -15,6 +16,8 @@ func main() {
 			ServeHTTP(ResponseWriter, *Request)
 		}
 	*/
+
+	logging.Info("will start http server")
 	s := &http.Server{
 		Addr:           fmt.Sprintf(":%d", setting.HTTPPort),
 		Handler:        routers.InitRouter(),
